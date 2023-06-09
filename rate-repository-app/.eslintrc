@@ -13,6 +13,6 @@
     "rules": {
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
-        "requireConfigFile": false
+        "requireConfigFile": 0
     }
 }
