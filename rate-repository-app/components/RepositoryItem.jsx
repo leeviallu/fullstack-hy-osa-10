@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     infoContainer: {
-        width: "100%",
+        display: "flex",
+        width: "75%",
         marginLeft: 10,
     },
     statContainer: {
@@ -29,18 +30,39 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryItem = ({ item }) => {
+    const {
+        ownerAvatarUrl,
+        fullName,
+        description,
+        language,
+        stargazersCount,
+        forksCount,
+        reviewCount,
+        ratingAverage,
+    } = item;
+
+    const kiloFormatter = (num) => {
+        return Math.abs(num) > 999
+            ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+            : Math.sign(num) * Math.abs(num);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.repositoryInfo}>
-                <Image
-                    style={styles.logo}
-                    source={{ uri: item.ownerAvatarUrl }}
-                />
+                <Image style={styles.logo} source={{ uri: ownerAvatarUrl }} />
                 <View style={styles.infoContainer}>
                     <Text style={{ fontWeight: "bold", marginBottom: 10 }}>
-                        {item.fullName}
+                        {fullName}
                     </Text>
-                    <Text style={{ marginBottom: 10 }}>{item.description}</Text>
+                    <Text
+                        style={{
+                            marginBottom: 10,
+                            flexGrow: 2,
+                        }}
+                    >
+                        {description}
+                    </Text>
                     <View
                         style={{
                             display: "flex",
@@ -56,36 +78,36 @@ const RepositoryItem = ({ item }) => {
                                 overflow: "hidden",
                             }}
                         >
-                            {item.language}
+                            {language}
                         </Text>
                     </View>
                 </View>
             </View>
             <View style={styles.repositoryStats}>
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold" }}>
-                        {item.stargazersCount}
+                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                        {kiloFormatter(stargazersCount)}
                     </Text>
-                    <Text>Stars</Text>
+                    <Text style={{ alignSelf: "center" }}>Stars</Text>
                 </View>
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold" }}>
-                        {item.forksCount}
+                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                        {kiloFormatter(forksCount)}
                     </Text>
-                    <Text>Forks</Text>
+                    <Text style={{ alignSelf: "center" }}>Forks</Text>
                 </View>
 
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold" }}>
-                        {item.reviewCount}
+                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                        {kiloFormatter(reviewCount)}
                     </Text>
-                    <Text>Reviews</Text>
+                    <Text style={{ alignSelf: "center" }}>Reviews</Text>
                 </View>
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold" }}>
-                        {item.ratingAverage}
+                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                        {kiloFormatter(ratingAverage)}
                     </Text>
-                    <Text>Rating</Text>
+                    <Text style={{ alignSelf: "center" }}>Rating</Text>
                 </View>
             </View>
         </View>
