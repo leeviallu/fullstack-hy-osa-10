@@ -5,7 +5,11 @@ import theme from "../theme";
 
 const styles = StyleSheet.create({
     button: {
+        borderRadius: 5,
+        padding: 10,
         backgroundColor: theme.colors.primary,
+        overflow: "hidden",
+        margin: 10,
     },
     inputElement: {
         width: "80%",
@@ -18,6 +22,7 @@ const SignInForm = ({ onSubmit }) => {
         <View style={{ width: "100%" }}>
             <FormikTextInput
                 style={styles.inputElement}
+                autoCapitalize="none"
                 testID="usernameInput"
                 name="username"
                 placeholder="Username"
@@ -29,11 +34,17 @@ const SignInForm = ({ onSubmit }) => {
                 name="password"
                 placeholder="Password"
             />
-            <Pressable
-                style={styles.button && styles.inputElement}
-                onPress={onSubmit}
-            >
-                <Text>Sign In</Text>
+            <Pressable style={styles.button} onPress={onSubmit}>
+                <Text
+                    fontWeight="bold"
+                    style={{
+                        color: "white",
+                        textAlign: "center",
+                        padding: 15,
+                    }}
+                >
+                    Sign In
+                </Text>
             </Pressable>
         </View>
     );
