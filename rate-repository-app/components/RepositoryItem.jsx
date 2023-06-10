@@ -1,4 +1,5 @@
-import { Text, View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
+import Text from "./Text";
 import theme from "../theme";
 
 const styles = StyleSheet.create({
@@ -52,7 +53,7 @@ const RepositoryItem = ({ item }) => {
             <View style={styles.repositoryInfo}>
                 <Image style={styles.logo} source={{ uri: ownerAvatarUrl }} />
                 <View style={styles.infoContainer}>
-                    <Text style={{ fontWeight: "bold", marginBottom: 10 }}>
+                    <Text fontWeight="bold" style={{ marginBottom: 10 }}>
                         {fullName}
                     </Text>
                     <Text
@@ -85,26 +86,26 @@ const RepositoryItem = ({ item }) => {
             </View>
             <View style={styles.repositoryStats}>
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
                         {kiloFormatter(stargazersCount)}
                     </Text>
                     <Text style={{ alignSelf: "center" }}>Stars</Text>
                 </View>
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
                         {kiloFormatter(forksCount)}
                     </Text>
                     <Text style={{ alignSelf: "center" }}>Forks</Text>
                 </View>
 
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
                         {kiloFormatter(reviewCount)}
                     </Text>
                     <Text style={{ alignSelf: "center" }}>Reviews</Text>
                 </View>
                 <View style={styles.statContainer}>
-                    <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
                         {kiloFormatter(ratingAverage)}
                     </Text>
                     <Text style={{ alignSelf: "center" }}>Rating</Text>
