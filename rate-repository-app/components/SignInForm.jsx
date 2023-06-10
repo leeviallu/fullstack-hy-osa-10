@@ -11,25 +11,17 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         margin: 10,
     },
-    inputElement: {
-        width: "80%",
-        alignSelf: "center",
-    },
 });
 
 const SignInForm = ({ onSubmit }) => {
     return (
         <View style={{ width: "100%", backgroundColor: "white" }}>
             <FormikTextInput
-                style={styles.inputElement}
                 autoCapitalize="none"
-                testID="usernameInput"
                 name="username"
                 placeholder="Username"
             />
             <FormikTextInput
-                style={styles.inputElement}
-                testID="passwordInput"
                 secureTextEntry={true}
                 name="password"
                 placeholder="Password"
