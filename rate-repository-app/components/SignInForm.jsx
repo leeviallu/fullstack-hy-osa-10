@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 const SignInForm = ({ onSubmit }) => {
     return (
-        <View style={{ width: "100%" }}>
+        <View style={{ width: "100%", backgroundColor: "white" }}>
             <FormikTextInput
                 style={styles.inputElement}
                 autoCapitalize="none"
