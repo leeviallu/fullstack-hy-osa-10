@@ -1,3 +1,12 @@
+import { RepositoryListContainer } from "../../components/RepositoryList";
+import { render, screen } from "@testing-library/react-native";
+
+const kiloFormatter = (num) => {
+    return Math.abs(num) > 999
+        ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+        : Math.sign(num) * Math.abs(num);
+};
+
 describe("RepositoryList", () => {
     describe("RepositoryListContainer", () => {
         it("renders repository information correctly", () => {
@@ -45,8 +54,34 @@ describe("RepositoryList", () => {
                     },
                 ],
             };
-            console.log(repositories);
-            expect(1).toBe(1);
+
+            render(<RepositoryListContainer repositories={repositories} />);
+            const repositoryItems = screen.getAllByTestId("repositoryItem");
+            const [firstRepositoryItem, secondRepositoryItem] = repositoryItems;
+
+            //tests for first repository
+            expect(firstRepositoryItem).toHaveTextContent("jaredpalmer/formik");
+            expect(firstRepositoryItem).toHaveTextContent(
+                "Build forms in React, without the tears"
+            );
+            expect(firstRepositoryItem).toHaveTextContent("TypeScript");
+            expect(firstRepositoryItem).toHaveTextContent(kiloFormatter(1619));
+            expect(firstRepositoryItem).toHaveTextContent(kiloFormatter(21856));
+            expect(firstRepositoryItem).toHaveTextContent(kiloFormatter(88));
+            expect(firstRepositoryItem).toHaveTextContent(kiloFormatter(3));
+
+            //tests for second repository
+            expect(secondRepositoryItem).toHaveTextContent(
+                "async-library/react-async"
+            );
+            expect(secondRepositoryItem).toHaveTextContent(
+                "Flexible promise-based React data loader"
+            );
+            expect(secondRepositoryItem).toHaveTextContent("JavaScript");
+            expect(secondRepositoryItem).toHaveTextContent(kiloFormatter(69));
+            expect(secondRepositoryItem).toHaveTextContent(kiloFormatter(1760));
+            expect(secondRepositoryItem).toHaveTextContent(kiloFormatter(72));
+            expect(secondRepositoryItem).toHaveTextContent(kiloFormatter(3));
         });
     });
 });
