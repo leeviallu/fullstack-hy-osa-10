@@ -36,7 +36,7 @@ const AppBar = () => {
     };
     return (
         <View style={styles.container}>
-            {data.me ? (
+            {data?.me ? (
                 <ScrollView horizontal>
                     <Link to="/">
                         <Text style={styles.buttonText}>Repositories</Text>
