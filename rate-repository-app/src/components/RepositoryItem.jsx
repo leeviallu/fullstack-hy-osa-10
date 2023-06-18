@@ -1,6 +1,8 @@
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, Pressable, Linking } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
+import useRepository from "../hooks/useRepository";
+import { useParams } from "react-router-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const RepositoryItem = ({ item }) => {
+export const RepositoryItemContainer = ({ item }) => {
     const {
         ownerAvatarUrl,
         fullName,
@@ -40,6 +42,7 @@ const RepositoryItem = ({ item }) => {
         forksCount,
         reviewCount,
         ratingAverage,
+        url,
     } = item;
 
     const kiloFormatter = (num) => {
@@ -49,69 +52,205 @@ const RepositoryItem = ({ item }) => {
     };
 
     return (
-        <View testID="repositoryItem" style={styles.container}>
-            <View style={styles.repositoryInfo}>
-                <Image style={styles.logo} source={{ uri: ownerAvatarUrl }} />
-                <View style={styles.infoContainer}>
-                    <Text fontWeight="bold" style={{ marginBottom: 10 }}>
-                        {fullName}
-                    </Text>
-                    <Text
-                        style={{
-                            marginBottom: 10,
-                            flexGrow: 2,
-                        }}
-                    >
-                        {description}
-                    </Text>
-                    <View
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                        }}
-                    >
-                        <Text
+        <View>
+            {url ? (
+                <View testID="repositoryItem" style={styles.container}>
+                    <View style={styles.repositoryInfo}>
+                        <Image
+                            style={styles.logo}
+                            source={{ uri: ownerAvatarUrl }}
+                        />
+                        <View style={styles.infoContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ marginBottom: 10 }}
+                            >
+                                {fullName}
+                            </Text>
+                            <Text
+                                style={{
+                                    marginBottom: 10,
+                                    flexGrow: 2,
+                                }}
+                            >
+                                {description}
+                            </Text>
+                            <View
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        borderRadius: 5,
+                                        padding: 10,
+                                        backgroundColor: theme.colors.primary,
+                                        color: "white",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    {language}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.repositoryStats}>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(stargazersCount)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Stars</Text>
+                        </View>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(forksCount)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Forks</Text>
+                        </View>
+
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(reviewCount)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Reviews</Text>
+                        </View>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(ratingAverage)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Rating</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Pressable
                             style={{
+                                alignSelf: "center",
+                                width: "90%",
                                 borderRadius: 5,
-                                padding: 10,
+                                padding: 15,
+                                marginBottom: 10,
                                 backgroundColor: theme.colors.primary,
-                                color: "white",
                                 overflow: "hidden",
                             }}
+                            onPress={() => Linking.openURL(url)}
                         >
-                            {language}
-                        </Text>
+                            <Text
+                                style={{
+                                    backgroundColor: theme.colors.primary,
+                                    color: "white",
+                                    alignSelf: "center",
+                                }}
+                            >
+                                {" "}
+                                Open in Github
+                            </Text>
+                        </Pressable>
                     </View>
                 </View>
-            </View>
-            <View style={styles.repositoryStats}>
-                <View style={styles.statContainer}>
-                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
-                        {kiloFormatter(stargazersCount)}
-                    </Text>
-                    <Text style={{ alignSelf: "center" }}>Stars</Text>
-                </View>
-                <View style={styles.statContainer}>
-                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
-                        {kiloFormatter(forksCount)}
-                    </Text>
-                    <Text style={{ alignSelf: "center" }}>Forks</Text>
-                </View>
+            ) : (
+                <View testID="repositoryItem" style={styles.container}>
+                    <View style={styles.repositoryInfo}>
+                        <Image
+                            style={styles.logo}
+                            source={{ uri: ownerAvatarUrl }}
+                        />
+                        <View style={styles.infoContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ marginBottom: 10 }}
+                            >
+                                {fullName}
+                            </Text>
+                            <Text
+                                style={{
+                                    marginBottom: 10,
+                                    flexGrow: 2,
+                                }}
+                            >
+                                {description}
+                            </Text>
+                            <View
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        borderRadius: 5,
+                                        padding: 10,
+                                        backgroundColor: theme.colors.primary,
+                                        color: "white",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    {language}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.repositoryStats}>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(stargazersCount)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Stars</Text>
+                        </View>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(forksCount)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Forks</Text>
+                        </View>
 
-                <View style={styles.statContainer}>
-                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
-                        {kiloFormatter(reviewCount)}
-                    </Text>
-                    <Text style={{ alignSelf: "center" }}>Reviews</Text>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(reviewCount)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Reviews</Text>
+                        </View>
+                        <View style={styles.statContainer}>
+                            <Text
+                                fontWeight="bold"
+                                style={{ alignSelf: "center" }}
+                            >
+                                {kiloFormatter(ratingAverage)}
+                            </Text>
+                            <Text style={{ alignSelf: "center" }}>Rating</Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.statContainer}>
-                    <Text fontWeight="bold" style={{ alignSelf: "center" }}>
-                        {kiloFormatter(ratingAverage)}
-                    </Text>
-                    <Text style={{ alignSelf: "center" }}>Rating</Text>
-                </View>
-            </View>
+            )}
         </View>
     );
+};
+
+const RepositoryItem = () => {
+    const { repositoryId } = useParams();
+    const { repository, loading } = useRepository(repositoryId);
+    if (loading) return null;
+    return <RepositoryItemContainer item={repository} />;
 };
 export default RepositoryItem;

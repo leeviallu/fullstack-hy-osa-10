@@ -32,6 +32,7 @@ export const GET_REPOSITORY = gql`
             forksCount
             reviewCount
             ratingAverage
+            url
         }
     }
 `;

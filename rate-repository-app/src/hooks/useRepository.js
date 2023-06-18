@@ -7,7 +7,7 @@ const useRepository = (repositoryId) => {
         variables: { repositoryId },
     });
     const repository = loading ? undefined : data.repository;
-    return { repository };
+    return { repository, loading };
 };
 
 export default useRepository;
