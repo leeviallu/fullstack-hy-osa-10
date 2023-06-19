@@ -1,4 +1,11 @@
-import { View, StyleSheet, Image, Pressable, Linking } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Image,
+    Pressable,
+    Linking,
+    FlatList,
+} from "react-native";
 import Text from "./Text";
 import theme from "../theme";
 import useRepository from "../hooks/useRepository";
@@ -33,16 +40,6 @@ const styles = StyleSheet.create({
 });
 
 export const RepositoryInfo = ({ repository }) => {
-    if (!repository) {
-        const { repositoryId } = useParams();
-        const { repository, loading } = useRepository(repositoryId);
-        if (loading) return null;
-        return <RepositoryItem repository={repository} />;
-    }
-    return <RepositoryItem repository={repository} />;
-};
-
-const RepositoryItem = ({ repository }) => {
     const {
         ownerAvatarUrl,
         fullName,
@@ -256,4 +253,30 @@ const RepositoryItem = ({ repository }) => {
         </View>
     );
 };
-export default RepositoryItem;
+
+const ReviewItem = () => {
+    return (
+        <View>
+            <Text>review</Text>
+        </View>
+    );
+};
+
+const SingleRepository = () => {
+    const { repositoryId } = useParams();
+    const { repository, loading } = useRepository(repositoryId);
+    if (loading) return null;
+    return (
+        <FlatList
+            // data={reviews}
+            renderItem={({ item }) => <ReviewItem review={item} />}
+            keyExtractor={({ id }) => id}
+            ListHeaderComponent={() => (
+                <RepositoryInfo repository={repository} />
+            )}
+            // ...
+        />
+    );
+};
+
+export default SingleRepository;
