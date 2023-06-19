@@ -9,6 +9,7 @@ import {
 import Text from "./Text";
 import theme from "../theme";
 import useRepository from "../hooks/useRepository";
+import useReviews from "../hooks/useReviews";
 import { useParams } from "react-router-native";
 
 const styles = StyleSheet.create({
@@ -254,21 +255,39 @@ export const RepositoryInfo = ({ repository }) => {
     );
 };
 
-const ReviewItem = () => {
+const ReviewItem = ({ review }) => {
     return (
-        <View>
-            <Text>review</Text>
+        <View
+            style={{
+                backgroundColor: theme.backgrounds.item,
+                marginTop: 10,
+                display: "flex",
+                flexDirection: "row",
+            }}
+        >
+            <View>
+                <Text>{review.node.rating}</Text>
+            </View>
+            <View>
+                <Text>{review.node.user.username}</Text>
+                <Text>{review.node.createdAt}</Text>
+                <Text>{review.node.text}</Text>
+            </View>
         </View>
     );
 };
 
 const SingleRepository = () => {
     const { repositoryId } = useParams();
-    const { repository, loading } = useRepository(repositoryId);
-    if (loading) return null;
+    const reviewFetch = useReviews(repositoryId);
+    const repositoryFetch = useRepository(repositoryId);
+    if (repositoryFetch.loading || reviewFetch.loading) return null;
+    const { reviews } = reviewFetch;
+    const { repository } = repositoryFetch;
+
     return (
         <FlatList
-            // data={reviews}
+            data={reviews}
             renderItem={({ item }) => <ReviewItem review={item} />}
             keyExtractor={({ id }) => id}
             ListHeaderComponent={() => (

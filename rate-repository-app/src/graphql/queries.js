@@ -46,7 +46,7 @@ export const AUTHENTICATED_USER = gql`
     }
 `;
 
-export const RepositoryReviews = gql`
+export const GET_REPOSITORY_REVIEWS = gql`
     query ($repositoryId: ID!) {
         repository(id: $repositoryId) {
             id
