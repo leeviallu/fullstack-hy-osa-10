@@ -32,7 +32,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export const RepositoryItemContainer = ({ item }) => {
+export const RepositoryInfo = ({ repository }) => {
+    if (!repository) {
+        const { repositoryId } = useParams();
+        const { repository, loading } = useRepository(repositoryId);
+        if (loading) return null;
+        return <RepositoryItem repository={repository} />;
+    }
+    return <RepositoryItem repository={repository} />;
+};
+
+const RepositoryItem = ({ repository }) => {
     const {
         ownerAvatarUrl,
         fullName,
@@ -43,7 +53,7 @@ export const RepositoryItemContainer = ({ item }) => {
         reviewCount,
         ratingAverage,
         url,
-    } = item;
+    } = repository;
 
     const kiloFormatter = (num) => {
         return Math.abs(num) > 999
@@ -245,12 +255,5 @@ export const RepositoryItemContainer = ({ item }) => {
             )}
         </View>
     );
-};
-
-const RepositoryItem = () => {
-    const { repositoryId } = useParams();
-    const { repository, loading } = useRepository(repositoryId);
-    if (loading) return null;
-    return <RepositoryItemContainer item={repository} />;
 };
 export default RepositoryItem;

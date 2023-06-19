@@ -45,3 +45,26 @@ export const AUTHENTICATED_USER = gql`
         }
     }
 `;
+
+export const RepositoryReviews = gql`
+    query ($repositoryId: ID!) {
+        repository(id: $repositoryId) {
+            id
+            fullName
+            reviews {
+                edges {
+                    node {
+                        id
+                        text
+                        rating
+                        createdAt
+                        user {
+                            id
+                            username
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
