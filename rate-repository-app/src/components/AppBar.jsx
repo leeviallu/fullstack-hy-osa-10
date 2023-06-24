@@ -50,6 +50,9 @@ const AppBar = () => {
                     <Link to="/">
                         <Text style={styles.buttonText}>Repositories</Text>
                     </Link>
+                    <Link to="/review-form">
+                        <Text style={styles.buttonText}>Review</Text>
+                    </Link>
                     <Link to="/signin">
                         <Text style={styles.buttonText}>Sign In</Text>
                     </Link>
