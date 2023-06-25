@@ -18,18 +18,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export const ReviewContainer = ({ onSubmit }) => {
-    const validationSchema = yup.object().shape({
-        username: yup
-            .string()
-            .min(3, "Username must contain atleast 3 characters")
-            .required("Username is required"),
-        password: yup
-            .string()
-            .min(8, "Password must contain atleast 8 characters")
-            .required("Password is required"),
-    });
+const validationSchema = yup.object().shape({
+    username: yup
+        .string()
+        .min(3, "Username must contain atleast 3 characters")
+        .required("Username is required"),
+    password: yup
+        .string()
+        .min(8, "Password must contain atleast 8 characters")
+        .required("Password is required"),
+});
 
+const ReviewContainer = ({ onSubmit }) => {
     const initialValues = {
         username: "",
         password: "",
