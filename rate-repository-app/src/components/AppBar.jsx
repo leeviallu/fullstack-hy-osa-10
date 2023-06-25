@@ -51,7 +51,7 @@ const AppBar = () => {
                         <Text style={styles.buttonText}>Repositories</Text>
                     </Link>
                     <Link to="/review-form">
-                        <Text style={styles.buttonText}>Review</Text>
+                        <Text style={styles.buttonText}>Create a review</Text>
                     </Link>
                     <Link to="/signin">
                         <Text style={styles.buttonText}>Sign In</Text>

@@ -31,8 +31,10 @@ const validationSchema = yup.object().shape({
 
 const ReviewContainer = ({ onSubmit }) => {
     const initialValues = {
-        username: "",
-        password: "",
+        repositoryOwnerName: "",
+        repositoryName: "",
+        rating: "",
+        review: "",
     };
     return (
         <Formik
@@ -44,13 +46,23 @@ const ReviewContainer = ({ onSubmit }) => {
                 <View style={{ width: "100%", backgroundColor: "white" }}>
                     <FormikTextInput
                         autoCapitalize="none"
-                        name="username"
-                        placeholder="Username"
+                        name="repositoryOwnerName"
+                        placeholder="Repository owner name"
                     />
                     <FormikTextInput
-                        secureTextEntry={true}
-                        name="password"
-                        placeholder="Password"
+                        autoCapitalize="none"
+                        name="repositoryName"
+                        placeholder="Repository name"
+                    />
+                    <FormikTextInput
+                        autoCapitalize="none"
+                        name="rating"
+                        placeholder="Rating between 0 and 100"
+                    />
+                    <FormikTextInput
+                        autoCapitalize="none"
+                        name="review"
+                        placeholder="Review"
                     />
                     <Pressable style={styles.button} onPress={handleSubmit}>
                         <Text
@@ -61,7 +73,7 @@ const ReviewContainer = ({ onSubmit }) => {
                                 padding: 15,
                             }}
                         >
-                            Sign In
+                            Create a review
                         </Text>
                     </Pressable>
                 </View>
