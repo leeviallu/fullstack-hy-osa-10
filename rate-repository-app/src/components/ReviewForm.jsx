@@ -19,19 +19,36 @@ const styles = StyleSheet.create({
 });
 
 const validationSchema = yup.object().shape({
-    username: yup
+    repositoryOwnerUsername: yup
         .string()
-        .min(3, "Username must contain atleast 3 characters")
-        .required("Username is required"),
-    password: yup
-        .string()
-        .min(8, "Password must contain atleast 8 characters")
-        .required("Password is required"),
+        .required("Repository name is required"),
+    repositoryName: yup.string().required("Repository owner name is required"),
+    rating: yup
+        .number()
+        .required("Rating is required")
+        .test({
+            name: "is-0-100",
+            skipAbsent: true,
+            test(value, ctx) {
+                if (value > 100) {
+                    return ctx.createError({
+                        message: "Rating should be between 0 and 100",
+                    });
+                }
+                if (value < 0) {
+                    return ctx.createError({
+                        message: "Rating should be between 0 and 100",
+                    });
+                }
+                return true;
+            },
+        }),
+    review: yup.string(),
 });
 
 const ReviewContainer = ({ onSubmit }) => {
     const initialValues = {
-        repositoryOwnerName: "",
+        repositoryOwnerUsername: "",
         repositoryName: "",
         rating: "",
         review: "",
@@ -46,7 +63,7 @@ const ReviewContainer = ({ onSubmit }) => {
                 <View style={{ width: "100%", backgroundColor: "white" }}>
                     <FormikTextInput
                         autoCapitalize="none"
-                        name="repositoryOwnerName"
+                        name="repositoryOwnerUsername"
                         placeholder="Repository owner name"
                     />
                     <FormikTextInput
@@ -60,6 +77,7 @@ const ReviewContainer = ({ onSubmit }) => {
                         placeholder="Rating between 0 and 100"
                     />
                     <FormikTextInput
+                        multiline
                         autoCapitalize="none"
                         name="review"
                         placeholder="Review"
