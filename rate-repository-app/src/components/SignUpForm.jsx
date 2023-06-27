@@ -1,7 +1,6 @@
 import * as yup from "yup";
 import { Formik } from "formik";
-import useSignIn from "../hooks/useSignIn";
-import { useNavigate } from "react-router-native";
+// import { useNavigate } from "react-router-native";
 
 import { View, Pressable, StyleSheet } from "react-native";
 import FormikTextInput from "./FormikTextInput";
@@ -21,18 +20,26 @@ const styles = StyleSheet.create({
 const validationSchema = yup.object().shape({
     username: yup
         .string()
-        .min(3, "Username must contain atleast 3 characters")
+        .min(5, "Username must contain atleast 5 characters")
+        .max(30, "Username must contain max 30 characters")
         .required("Username is required"),
     password: yup
         .string()
-        .min(8, "Password must contain atleast 8 characters")
+        .min(5, "Password must contain atleast 5 characters")
+        .max(30, "Password must contain max 30 characters")
+        .required("Password is required"),
+    passwordConfirmation: yup
+        .string()
+        .min(5, "Password must contain atleast 5 characters")
+        .max(30, "Password must contain max 30 characters")
         .required("Password is required"),
 });
 
-const SignInContainer = ({ onSubmit }) => {
+const SignUpContainer = ({ onSubmit }) => {
     const initialValues = {
         username: "",
         password: "",
+        passwordConfirmation: "",
     };
     return (
         <Formik
@@ -52,6 +59,11 @@ const SignInContainer = ({ onSubmit }) => {
                         name="password"
                         placeholder="Password"
                     />
+                    <FormikTextInput
+                        secureTextEntry={true}
+                        name="passwordConfirmation"
+                        placeholder="Password confirmation"
+                    />
                     <Pressable style={styles.button} onPress={handleSubmit}>
                         <Text
                             fontWeight="bold"
@@ -61,7 +73,7 @@ const SignInContainer = ({ onSubmit }) => {
                                 padding: 15,
                             }}
                         >
-                            Sign in
+                            Sign up
                         </Text>
                     </Pressable>
                 </View>
@@ -70,21 +82,22 @@ const SignInContainer = ({ onSubmit }) => {
     );
 };
 
-const SignInForm = () => {
-    const [signIn] = useSignIn();
-    const navigate = useNavigate();
+const SignUpForm = () => {
+    // const [signIn] = useSignIn();
+    // const navigate = useNavigate();
 
     const onSubmit = async (values) => {
-        const { username, password } = values;
-        try {
-            const { data } = await signIn({ username, password });
-            console.log(data);
-            navigate("/");
-        } catch (e) {
-            console.log(e);
-        }
+        // const { username, password } = values;
+        // try {
+        //     const { data } = await signIn({ username, password });
+        //     console.log(data);
+        //     navigate("/");
+        // } catch (e) {
+        //     console.log(e);
+        // }
+        console.log(values);
     };
-    return <SignInContainer onSubmit={onSubmit} />;
+    return <SignUpContainer onSubmit={onSubmit} />;
 };
 
-export default SignInForm;
+export default SignUpForm;
