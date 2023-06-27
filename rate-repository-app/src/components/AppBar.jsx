@@ -41,6 +41,9 @@ const AppBar = () => {
                     <Link to="/">
                         <Text style={styles.buttonText}>Repositories</Text>
                     </Link>
+                    <Link to="/review-form">
+                        <Text style={styles.buttonText}>Create a review</Text>
+                    </Link>
                     <Pressable onPress={signOut}>
                         <Text style={styles.buttonText}>Sign Out</Text>
                     </Pressable>
@@ -49,9 +52,6 @@ const AppBar = () => {
                 <ScrollView horizontal>
                     <Link to="/">
                         <Text style={styles.buttonText}>Repositories</Text>
-                    </Link>
-                    <Link to="/review-form">
-                        <Text style={styles.buttonText}>Create a review</Text>
                     </Link>
                     <Link to="/signin">
                         <Text style={styles.buttonText}>Sign In</Text>

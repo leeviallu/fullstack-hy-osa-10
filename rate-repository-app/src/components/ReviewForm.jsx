@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { Formik } from "formik";
-import useSignIn from "../hooks/useSignIn";
+import useCreateReview from "../hooks/useCreateReview";
 import { useNavigate } from "react-router-native";
 
 import { View, Pressable, StyleSheet } from "react-native";
@@ -19,39 +19,23 @@ const styles = StyleSheet.create({
 });
 
 const validationSchema = yup.object().shape({
-    repositoryOwnerUsername: yup
-        .string()
-        .required("Repository name is required"),
-    repositoryName: yup.string().required("Repository owner name is required"),
+    ownerName: yup.string().required("Repository owner name is required"),
+    repositoryName: yup.string().required("Repository name is required"),
     rating: yup
         .number()
-        .required("Rating is required")
-        .test({
-            name: "is-0-100",
-            skipAbsent: true,
-            test(value, ctx) {
-                if (value > 100) {
-                    return ctx.createError({
-                        message: "Rating should be between 0 and 100",
-                    });
-                }
-                if (value < 0) {
-                    return ctx.createError({
-                        message: "Rating should be between 0 and 100",
-                    });
-                }
-                return true;
-            },
-        }),
-    review: yup.string(),
+        .integer()
+        .min(0, "Rating must be bigger than 0")
+        .max(100, "Rating must be less than 100")
+        .required("Rating is required"),
+    text: yup.string(),
 });
 
 const ReviewContainer = ({ onSubmit }) => {
     const initialValues = {
-        repositoryOwnerUsername: "",
+        ownerName: "",
         repositoryName: "",
-        rating: "",
-        review: "",
+        rating: NaN,
+        text: "",
     };
     return (
         <Formik
@@ -63,7 +47,7 @@ const ReviewContainer = ({ onSubmit }) => {
                 <View style={{ width: "100%", backgroundColor: "white" }}>
                     <FormikTextInput
                         autoCapitalize="none"
-                        name="repositoryOwnerUsername"
+                        name="ownerName"
                         placeholder="Repository owner name"
                     />
                     <FormikTextInput
@@ -79,7 +63,7 @@ const ReviewContainer = ({ onSubmit }) => {
                     <FormikTextInput
                         multiline
                         autoCapitalize="none"
-                        name="review"
+                        name="text"
                         placeholder="Review"
                     />
                     <Pressable style={styles.button} onPress={handleSubmit}>
@@ -101,15 +85,17 @@ const ReviewContainer = ({ onSubmit }) => {
 };
 
 const ReviewForm = () => {
-    const [signIn] = useSignIn();
+    const [createReview] = useCreateReview();
     const navigate = useNavigate();
 
     const onSubmit = async (values) => {
-        const { username, password } = values;
+        const review = {
+            ...values,
+            rating: Number(values["rating"]),
+        };
         try {
-            const { data } = await signIn({ username, password });
-            console.log(data);
-            navigate("/");
+            const data = await createReview(review);
+            navigate(`/${data.createReview.repositoryId}`);
         } catch (e) {
             console.log(e);
         }

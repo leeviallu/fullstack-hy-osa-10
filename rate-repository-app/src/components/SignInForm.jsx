@@ -70,7 +70,7 @@ const SignInContainer = ({ onSubmit }) => {
     );
 };
 
-const SignIn = () => {
+const SignInForm = () => {
     const [signIn] = useSignIn();
     const navigate = useNavigate();
 
@@ -87,4 +87,4 @@ const SignIn = () => {
     return <SignInContainer onSubmit={onSubmit} />;
 };
 
-export default SignIn;
+export default SignInForm;
