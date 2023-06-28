@@ -32,7 +32,11 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-    const { repositories, loading } = useRepositories();
+    const orders = {
+        orderBy: "CREATED_AT",
+        orderDirection: "ASC",
+    };
+    const { repositories, loading } = useRepositories(orders);
     if (loading) return null;
     return <RepositoryListContainer repositories={repositories} />;
 };
