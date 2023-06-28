@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { Formik } from "formik";
-// import { useNavigate } from "react-router-native";
+import { useNavigate } from "react-router-native";
 
 import { View, Pressable, StyleSheet } from "react-native";
 import FormikTextInput from "./FormikTextInput";
@@ -30,9 +30,7 @@ const validationSchema = yup.object().shape({
         .required("Password is required"),
     passwordConfirmation: yup
         .string()
-        .min(5, "Password must contain atleast 5 characters")
-        .max(30, "Password must contain max 30 characters")
-        .required("Password is required"),
+        .oneOf([yup.ref("password"), null], "Passwords don't match"),
 });
 
 const SignUpContainer = ({ onSubmit }) => {
@@ -84,17 +82,17 @@ const SignUpContainer = ({ onSubmit }) => {
 
 const SignUpForm = () => {
     // const [signIn] = useSignIn();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const onSubmit = async (values) => {
         // const { username, password } = values;
-        // try {
-        //     const { data } = await signIn({ username, password });
-        //     console.log(data);
-        //     navigate("/");
-        // } catch (e) {
-        //     console.log(e);
-        // }
+        try {
+            // const { data } = await signIn({ username, password });
+            // console.log(data);
+            navigate("/");
+        } catch (e) {
+            console.log(e);
+        }
         console.log(values);
     };
     return <SignUpContainer onSubmit={onSubmit} />;
