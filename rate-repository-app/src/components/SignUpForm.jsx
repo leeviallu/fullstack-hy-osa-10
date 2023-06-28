@@ -1,6 +1,8 @@
 import * as yup from "yup";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-native";
+import useSignUp from "../hooks/useSignUp";
+import useSignIn from "../hooks/useSignIn";
 
 import { View, Pressable, StyleSheet } from "react-native";
 import FormikTextInput from "./FormikTextInput";
@@ -81,19 +83,22 @@ const SignUpContainer = ({ onSubmit }) => {
 };
 
 const SignUpForm = () => {
-    // const [signIn] = useSignIn();
+    const [createUser] = useSignUp();
+    const [signIn] = useSignIn();
     const navigate = useNavigate();
 
     const onSubmit = async (values) => {
-        // const { username, password } = values;
         try {
-            // const { data } = await signIn({ username, password });
-            // console.log(data);
+            const user = {
+                username: values.username,
+                password: values.password,
+            };
+            await createUser(user);
+            await signIn(user);
             navigate("/");
         } catch (e) {
             console.log(e);
         }
-        console.log(values);
     };
     return <SignUpContainer onSubmit={onSubmit} />;
 };

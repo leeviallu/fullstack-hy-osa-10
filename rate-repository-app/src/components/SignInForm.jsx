@@ -25,7 +25,7 @@ const validationSchema = yup.object().shape({
         .required("Username is required"),
     password: yup
         .string()
-        .min(8, "Password must contain atleast 8 characters")
+        .min(5, "Password must contain atleast 5 characters")
         .required("Password is required"),
 });
 
@@ -77,8 +77,7 @@ const SignInForm = () => {
     const onSubmit = async (values) => {
         const { username, password } = values;
         try {
-            const { data } = await signIn({ username, password });
-            console.log(data);
+            await signIn({ username, password });
             navigate("/");
         } catch (e) {
             console.log(e);

@@ -15,3 +15,12 @@ export const REVIEW_REPOSITORY = gql`
         }
     }
 `;
+
+export const CREATE_USER = gql`
+    mutation Mutation($user: CreateUserInput) {
+        createUser(user: $user) {
+            username
+            createdAt
+        }
+    }
+`;
