@@ -5,6 +5,7 @@ import { RepositoryInfo } from "./RepositoryItem";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
     separator: {
@@ -53,6 +54,46 @@ const RepositoryList = () => {
     const repositoryNodes = repositories
         ? repositories.edges.map((edge) => edge.node)
         : [];
+    if (repositoryNodes.length === 0) {
+        return (
+            <View style={{ width: "100%", paddingHorizontal: 8 }}>
+                <TextInput
+                    placeholder="Filter repositories"
+                    autoCapitalize="none"
+                    style={{
+                        backgroundColor: "white",
+                        padding: 10,
+                        marginTop: 20,
+                    }}
+                    onChangeText={(newKeyword) => {
+                        setSearchKeyword(newKeyword);
+                    }}
+                    defaultValue={searchKeyword}
+                ></TextInput>
+                <Picker
+                    selectedValue={selectedLanguage}
+                    onValueChange={(itemValue) =>
+                        setSelectedLanguage(itemValue)
+                    }
+                    style={{
+                        backgroundColor: "white",
+                        marginVertical: 15,
+                    }}
+                >
+                    <Picker.Item label="Latest repositories" value="LATEST" />
+                    <Picker.Item
+                        label="Highest rated repositories"
+                        value="HIGHEST_RATED"
+                    />
+                    <Picker.Item
+                        label="Lowest rated repositories"
+                        value="LOWEST_RATED"
+                    />
+                </Picker>
+                <Text>No repositories found</Text>
+            </View>
+        );
+    }
     return (
         <FlatList
             data={repositoryNodes}
