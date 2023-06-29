@@ -4,6 +4,7 @@ import useRepositories from "../hooks/useRepositories";
 import { RepositoryInfo } from "./RepositoryItem";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
+import { useDebounce } from "use-debounce";
 
 const styles = StyleSheet.create({
     separator: {
@@ -17,9 +18,10 @@ const RepositoryList = () => {
     const navigate = useNavigate();
     const [searchKeyword, setSearchKeyword] = useState();
     const [selectedLanguage, setSelectedLanguage] = useState();
+    const [value] = useDebounce(searchKeyword, 500);
 
     let repositoryArgs = {
-        searchKeyword,
+        searchKeyword: value,
         orderBy: "CREATED_AT",
         orderDirection: "DESC",
     };
