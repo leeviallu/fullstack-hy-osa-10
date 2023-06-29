@@ -1,4 +1,4 @@
-import { FlatList, View, StyleSheet, Pressable } from "react-native";
+import { FlatList, View, StyleSheet, Pressable, TextInput } from "react-native";
 import { useNavigate } from "react-router-native";
 import useRepositories from "../hooks/useRepositories";
 import { RepositoryInfo } from "./RepositoryItem";
@@ -15,31 +15,37 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
     const navigate = useNavigate();
+    const [searchKeyword, setSearchKeyword] = useState();
     const [selectedLanguage, setSelectedLanguage] = useState();
-    let orders = {
+
+    let repositoryArgs = {
+        searchKeyword,
         orderBy: "CREATED_AT",
         orderDirection: "DESC",
     };
     if (selectedLanguage == "LATEST") {
-        orders = {
+        repositoryArgs = {
+            ...repositoryArgs,
             orderBy: "CREATED_AT",
             orderDirection: "DESC",
         };
     }
     if (selectedLanguage == "HIGHEST_RATED") {
-        orders = {
+        repositoryArgs = {
+            ...repositoryArgs,
             orderBy: "RATING_AVERAGE",
             orderDirection: "DESC",
         };
     }
     if (selectedLanguage == "LOWEST_RATED") {
-        orders = {
+        repositoryArgs = {
+            ...repositoryArgs,
             orderBy: "RATING_AVERAGE",
             orderDirection: "ASC",
         };
     }
 
-    const { repositories, loading } = useRepositories(orders);
+    const { repositories, loading } = useRepositories(repositoryArgs);
     if (loading) return null;
 
     const repositoryNodes = repositories
@@ -50,26 +56,43 @@ const RepositoryList = () => {
             data={repositoryNodes}
             ItemSeparatorComponent={ItemSeparator}
             ListHeaderComponent={() => (
-                <Picker
-                    selectedValue={selectedLanguage}
-                    onValueChange={(itemValue) =>
-                        setSelectedLanguage(itemValue)
-                    }
-                    style={{
-                        backgroundColor: "white",
-                        marginVertical: 15,
-                    }}
-                >
-                    <Picker.Item label="Latest repositories" value="LATEST" />
-                    <Picker.Item
-                        label="Highest rated repositories"
-                        value="HIGHEST_RATED"
-                    />
-                    <Picker.Item
-                        label="Lowest rated repositories"
-                        value="LOWEST_RATED"
-                    />
-                </Picker>
+                <View>
+                    <TextInput
+                        placeholder="Filter repositories"
+                        style={{
+                            backgroundColor: "white",
+                            padding: 10,
+                            marginTop: 20,
+                        }}
+                        onChangeText={(newKeyword) => {
+                            setSearchKeyword(newKeyword);
+                        }}
+                        defaultValue={searchKeyword}
+                    ></TextInput>
+                    <Picker
+                        selectedValue={selectedLanguage}
+                        onValueChange={(itemValue) =>
+                            setSelectedLanguage(itemValue)
+                        }
+                        style={{
+                            backgroundColor: "white",
+                            marginVertical: 15,
+                        }}
+                    >
+                        <Picker.Item
+                            label="Latest repositories"
+                            value="LATEST"
+                        />
+                        <Picker.Item
+                            label="Highest rated repositories"
+                            value="HIGHEST_RATED"
+                        />
+                        <Picker.Item
+                            label="Lowest rated repositories"
+                            value="LOWEST_RATED"
+                        />
+                    </Picker>
+                </View>
             )}
             renderItem={({ item }) => (
                 <Pressable onPress={() => navigate(`/${item.id}`)}>
