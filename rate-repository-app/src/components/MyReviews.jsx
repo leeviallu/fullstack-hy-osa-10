@@ -1,4 +1,4 @@
-import { View, FlatList, Pressable, Alert } from "react-native";
+import { View, FlatList, Pressable, Alert, StyleSheet } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
 import { format } from "date-fns";
@@ -6,6 +6,25 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-native";
 import { GET_CURRENT_USER } from "../graphql/queries";
 import { DELETE_REVIEW } from "../graphql/mutations";
+
+const styles = StyleSheet.create({
+    buttonBlue: {
+        width: "40%",
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: theme.colors.primary,
+        overflow: "hidden",
+        margin: 10,
+    },
+    buttonRed: {
+        width: "40%",
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: "#ff4d4d",
+        overflow: "hidden",
+        margin: 10,
+    },
+});
 
 const ReviewItem = ({ review, refetch }) => {
     const navigate = useNavigate();
@@ -36,11 +55,14 @@ const ReviewItem = ({ review, refetch }) => {
             ]
         );
     return (
-        <View>
+        <View
+            style={{
+                backgroundColor: theme.backgrounds.item,
+                marginTop: 10,
+            }}
+        >
             <View
                 style={{
-                    backgroundColor: theme.backgrounds.item,
-                    marginTop: 10,
                     display: "flex",
                     flexDirection: "row",
                 }}
@@ -75,16 +97,37 @@ const ReviewItem = ({ review, refetch }) => {
                     <Text style={{ paddingTop: 5 }}>{review.node.text}</Text>
                 </View>
             </View>
-            <Pressable
-                onPress={() => {
-                    navigate(`/${review.node.repositoryId}`);
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
                 }}
             >
-                <Text>View repository</Text>
-            </Pressable>
-            <Pressable onPress={createTwoButtonAlert}>
-                <Text>Delete review</Text>
-            </Pressable>
+                <Pressable
+                    style={styles.buttonBlue}
+                    onPress={() => {
+                        navigate(`/${review.node.repositoryId}`);
+                    }}
+                >
+                    <Text
+                        fontWeight={"bold"}
+                        style={{ color: "white", alignSelf: "center" }}
+                    >
+                        View repository
+                    </Text>
+                </Pressable>
+                <Pressable
+                    style={styles.buttonRed}
+                    onPress={createTwoButtonAlert}
+                >
+                    <Text
+                        fontWeight={"bold"}
+                        style={{ color: "white", alignSelf: "center" }}
+                    >
+                        Delete review
+                    </Text>
+                </Pressable>
+            </View>
         </View>
     );
 };
@@ -99,7 +142,6 @@ const MyReviews = () => {
     if (!data) return null;
     if (!data.me) return null;
     const { reviews } = data.me;
-    console.log(reviews);
     if (reviews.edges.length == 0)
         return (
             <View
