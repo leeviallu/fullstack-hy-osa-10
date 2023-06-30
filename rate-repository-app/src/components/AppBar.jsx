@@ -3,7 +3,7 @@ import { Link } from "react-router-native";
 import Text from "./Text";
 import Constants from "expo-constants";
 import theme from "../theme";
-import { AUTHENTICATED_USER } from "../graphql/queries";
+import { GET_CURRENT_USER } from "../graphql/queries";
 import { useContext } from "react";
 import { useQuery, useApolloClient } from "@apollo/client";
 import AuthStorageContext from "../contexts/AuthStorageContext";
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-    const { data } = useQuery(AUTHENTICATED_USER);
+    const { data } = useQuery(GET_CURRENT_USER);
     const authStorage = useContext(AuthStorageContext);
     const apolloClient = useApolloClient();
 
@@ -43,6 +43,9 @@ const AppBar = () => {
                     </Link>
                     <Link to="/review-form">
                         <Text style={styles.buttonText}>Create a review</Text>
+                    </Link>
+                    <Link to="/my-reviews">
+                        <Text style={styles.buttonText}>My reviews</Text>
                     </Link>
                     <Pressable onPress={signOut}>
                         <Text style={styles.buttonText}>Sign out</Text>
