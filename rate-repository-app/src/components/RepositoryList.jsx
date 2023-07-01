@@ -22,6 +22,7 @@ const RepositoryList = () => {
     const [value] = useDebounce(searchKeyword, 500);
 
     let repositoryArgs = {
+        first: 8,
         searchKeyword: value,
         orderBy: "CREATED_AT",
         orderDirection: "DESC",
@@ -48,12 +49,16 @@ const RepositoryList = () => {
         };
     }
 
-    const { repositories, loading } = useRepositories(repositoryArgs);
-    if (loading) return null;
+    const { repositories, fetchMore } = useRepositories(repositoryArgs);
+
+    const onEndReach = () => {
+        fetchMore();
+    };
 
     const repositoryNodes = repositories
         ? repositories.edges.map((edge) => edge.node)
         : [];
+
     if (repositoryNodes.length === 0) {
         return (
             <View style={{ width: "100%", paddingHorizontal: 8 }}>
@@ -143,6 +148,8 @@ const RepositoryList = () => {
                 </Pressable>
             )}
             keyExtractor={(item) => item.id}
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.5}
         />
     );
 };
