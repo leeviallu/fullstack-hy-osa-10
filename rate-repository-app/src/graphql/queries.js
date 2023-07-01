@@ -81,22 +81,30 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const GET_REPOSITORY_REVIEWS = gql`
-    query ($repositoryId: ID!) {
+    query ($repositoryId: ID!, $first: Int, $after: String) {
         repository(id: $repositoryId) {
             id
             fullName
-            reviews {
+            reviews(first: $first, after: $after) {
+                totalCount
                 edges {
                     node {
                         id
                         text
                         rating
                         createdAt
+                        repositoryId
                         user {
                             id
                             username
                         }
                     }
+                    cursor
+                }
+                pageInfo {
+                    endCursor
+                    startCursor
+                    hasNextPage
                 }
             }
         }

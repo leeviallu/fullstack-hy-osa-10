@@ -6,7 +6,6 @@ const useRepositories = (variables) => {
         fetchPolicy: "cache-and-network",
         variables,
     });
-    console.log(data);
 
     const handleFetchMore = () => {
         const canFetchMore =

@@ -301,11 +301,15 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
     const { repositoryId } = useParams();
-    const reviewFetch = useReviews(repositoryId);
+    const reviewsFetched = 4;
+    const reviewFetch = useReviews(repositoryId, reviewsFetched);
     const repositoryFetch = useRepository(repositoryId);
     if (repositoryFetch.loading || reviewFetch.loading) return null;
-    const { reviews } = reviewFetch;
+    const { reviews, fetchMore } = reviewFetch;
     const { repository } = repositoryFetch;
+    const onEndReach = () => {
+        fetchMore();
+    };
 
     return (
         <FlatList
@@ -315,6 +319,8 @@ const SingleRepository = () => {
             ListHeaderComponent={() => (
                 <RepositoryInfo repository={repository} />
             )}
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.5}
         />
     );
 };
